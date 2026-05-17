@@ -18,13 +18,16 @@ public class Register extends javax.swing.JFrame {
 
     public Register() {
         initComponents();
-                addPlaceholderStyle(JTname, "Enter your full name...");
-                addPlaceholderStyle(JTemail, "Enter your student email...");
-                addPlaceholderStyle(JTpassword, "Enter your passwords...");
-                addPlaceholderStyle(JTconfirmpassword, "Enter your passwords again...");
+        addPlaceholderStyle(JTname, "Enter your full name...");
+        addPlaceholderStyle(JTemail, "Enter your student email...");
+        addPlaceholderStyle(JTpassword, "Enter your passwords...");
+        addPlaceholderStyle(JTconfirmpassword, "Enter your passwords again...");
     }
     
     private void addPlaceholderStyle(javax.swing.JTextField textField, String placeholder) {
+        textField.setText(placeholder);
+        textField.setForeground(new Color(153, 153, 153));
+
         textField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -38,7 +41,7 @@ public class Register extends javax.swing.JFrame {
             public void focusLost(FocusEvent e) {
                 if (textField.getText().isEmpty()) {
                     textField.setText(placeholder);
-                    textField.setForeground(new Color(153, 153, 153)); // Grey color
+                    textField.setForeground(new Color(153, 153, 153));
                 }
             }
         });
