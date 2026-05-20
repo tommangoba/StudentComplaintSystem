@@ -15,8 +15,10 @@ import java.awt.event.FocusListener;
 public class Register extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Register.class.getName());
+    public static java.util.ArrayList<String> registeredEmails = new java.util.ArrayList<>();
+    public static java.util.ArrayList<String> registeredPasswords = new java.util.ArrayList<>();
 
-    public Register() {
+public Register() {
         initComponents();
         addPlaceholderStyle(JTname, "Enter your full name...");
         addPlaceholderStyle(JTemail, "Enter your student email...");
@@ -67,9 +69,9 @@ public class Register extends javax.swing.JFrame {
         jConfirmPassword = new javax.swing.JLabel();
         JTconfirmpassword = new javax.swing.JTextField();
         jbRegister = new javax.swing.JButton();
+        jbBacktologin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(662, 780));
         setResizable(false);
 
         jMainPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -118,6 +120,12 @@ public class Register extends javax.swing.JFrame {
         jbRegister.setText("Register");
         jbRegister.addActionListener(this::jbRegisterActionPerformed);
 
+        jbBacktologin.setBackground(new java.awt.Color(66, 103, 238));
+        jbBacktologin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jbBacktologin.setForeground(new java.awt.Color(255, 255, 255));
+        jbBacktologin.setText("Back to Login");
+        jbBacktologin.addActionListener(this::jbBacktologinActionPerformed);
+
         javax.swing.GroupLayout jMainPanelLayout = new javax.swing.GroupLayout(jMainPanel);
         jMainPanel.setLayout(jMainPanelLayout);
         jMainPanelLayout.setHorizontalGroup(
@@ -135,7 +143,8 @@ public class Register extends javax.swing.JFrame {
                             .addComponent(JTconfirmpassword, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
                             .addComponent(jConfirmPassword)
                             .addComponent(jPassword)
-                            .addComponent(jbRegister, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jbRegister, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jbBacktologin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jMainPanelLayout.createSequentialGroup()
                         .addGap(252, 252, 252)
                         .addComponent(jRegister)))
@@ -164,7 +173,9 @@ public class Register extends javax.swing.JFrame {
                 .addComponent(JTconfirmpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(95, 95, 95)
                 .addComponent(jbRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(181, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbBacktologin, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(130, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -183,12 +194,66 @@ public class Register extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRegisterActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:                                      
+String name = JTname.getText().trim();
+        String email = JTemail.getText().trim();
+        String password = JTpassword.getText().trim();
+        String confirmPassword = JTconfirmpassword.getText().trim();
+        
+        String emailPattern = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
+
+        if (name.isEmpty() || name.equals("Enter your full name...") ||
+            email.isEmpty() || email.equals("Enter your student email...") ||
+            password.isEmpty() || password.equals("Enter your password...") ||
+            confirmPassword.isEmpty() || confirmPassword.equals("Enter your password again...")) {
+            
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Invalid input! Please fill up all fields.", 
+                    "Registration Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!email.matches(emailPattern)) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Invalid Email address! Please use a valid Gmail account.", 
+                    "Registration Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Passwords do not match! Please check again.", 
+                    "Registration Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        registeredEmails.add(email);
+        registeredPasswords.add(password);
+
+        javax.swing.JOptionPane.showMessageDialog(this, 
+                "Registered Successfully!", 
+                "Success", 
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                
+        LoginPage login = new LoginPage(); 
+        login.setVisible(true);
+        login.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_jbRegisterActionPerformed
 
     private void JTnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JTnameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JTnameActionPerformed
+
+    private void jbBacktologinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBacktologinActionPerformed
+        // TODO add your handling code here:
+                LoginPage loginFrame = new LoginPage();
+        loginFrame.setVisible(true);
+        loginFrame.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_jbBacktologinActionPerformed
 
     /**
      * @param args the command line arguments
@@ -226,6 +291,7 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JLabel jName;
     private javax.swing.JLabel jPassword;
     private javax.swing.JLabel jRegister;
+    private javax.swing.JButton jbBacktologin;
     private javax.swing.JButton jbRegister;
     // End of variables declaration//GEN-END:variables
 }

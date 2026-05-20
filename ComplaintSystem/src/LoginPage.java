@@ -23,6 +23,9 @@ public class LoginPage extends javax.swing.JFrame {
     }
 
     private void addPlaceholderStyle(javax.swing.JTextField textField, String placeholder) {
+        textField.setText(placeholder);
+        textField.setForeground(new Color(153, 153, 153));
+
         textField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -36,7 +39,7 @@ public class LoginPage extends javax.swing.JFrame {
             public void focusLost(FocusEvent e) {
                 if (textField.getText().isEmpty()) {
                     textField.setText(placeholder);
-                    textField.setForeground(new Color(153, 153, 153)); // Grey color
+                    textField.setForeground(new Color(153, 153, 153));
                 }
             }
         });
@@ -56,7 +59,7 @@ public class LoginPage extends javax.swing.JFrame {
         JPpassword = new javax.swing.JPasswordField();
         JBlogin = new javax.swing.JButton();
         JBregister = new javax.swing.JButton();
-        txtForgotPassword = new javax.swing.JLabel();
+        JLforgotpassword = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1115, 780));
@@ -116,10 +119,10 @@ public class LoginPage extends javax.swing.JFrame {
         JTusername.setToolTipText("");
         JTusername.addActionListener(this::JTusernameActionPerformed);
 
-        JPpassword.setEditable(false);
         JPpassword.setBackground(new java.awt.Color(255, 255, 255));
         JPpassword.setForeground(new java.awt.Color(0, 0, 0));
         JPpassword.setText("Passwords");
+        JPpassword.addActionListener(this::JPpasswordActionPerformed);
 
         JBlogin.setBackground(new java.awt.Color(66, 103, 238));
         JBlogin.setForeground(new java.awt.Color(255, 255, 255));
@@ -131,8 +134,19 @@ public class LoginPage extends javax.swing.JFrame {
         JBregister.setText("Register");
         JBregister.addActionListener(this::JBregisterActionPerformed);
 
-        txtForgotPassword.setForeground(new java.awt.Color(0, 0, 0));
-        txtForgotPassword.setText("Forgot Password?");
+        JLforgotpassword.setForeground(new java.awt.Color(0, 0, 204));
+        JLforgotpassword.setText("Forgot Password?");
+        JLforgotpassword.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JLforgotpasswordMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                JLforgotpasswordMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                JLforgotpasswordMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout JLogInLayout = new javax.swing.GroupLayout(JLogIn);
         JLogIn.setLayout(JLogInLayout);
@@ -156,7 +170,7 @@ public class LoginPage extends javax.swing.JFrame {
                 .addGap(390, 390, 390))
             .addGroup(JLogInLayout.createSequentialGroup()
                 .addGap(479, 479, 479)
-                .addComponent(txtForgotPassword)
+                .addComponent(JLforgotpassword)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         JLogInLayout.setVerticalGroup(
@@ -173,7 +187,7 @@ public class LoginPage extends javax.swing.JFrame {
                     .addComponent(JBlogin, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JBregister, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtForgotPassword)
+                .addComponent(JLforgotpassword)
                 .addContainerGap(144, Short.MAX_VALUE))
         );
 
@@ -221,11 +235,87 @@ public class LoginPage extends javax.swing.JFrame {
 
     private void JBloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBloginActionPerformed
         // TODO add your handling code here:
+String username = JTusername.getText().trim();
+        String password = String.valueOf(JPpassword.getPassword()).trim(); 
+
+        if (username.isEmpty() || username.equals("Student/Employee ID") || password.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Invalid input! Please enter both your ID and password.", 
+                    "Login Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+        } else {
+            int accountIndex = Register.registeredEmails.indexOf(username);
+
+            if (accountIndex != -1 && Register.registeredPasswords.get(accountIndex).equals(password)) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Login Successful!");
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                        "Wrong Username or Password! Please try again.", 
+                        "Login Failed", 
+                        javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_JBloginActionPerformed
 
     private void JBregisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBregisterActionPerformed
         // TODO add your handling code here:
+        Register registerFrame = new Register();
+        registerFrame.setVisible(true);
+        registerFrame.setLocationRelativeTo(null);
+        this.dispose();
     }//GEN-LAST:event_JBregisterActionPerformed
+
+    private void JPpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JPpasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JPpasswordActionPerformed
+
+    private void JLforgotpasswordMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JLforgotpasswordMouseEntered
+        // TODO add your handling code here:                                           
+        JLforgotpassword.setForeground(new java.awt.Color(0, 102, 204));
+        JLforgotpassword.setText("<html><u>Forgot Password?</u></html>");                                            
+    }//GEN-LAST:event_JLforgotpasswordMouseEntered
+
+    private void JLforgotpasswordMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JLforgotpasswordMouseExited
+        // TODO add your handling code here:
+        JLforgotpassword.setForeground(new java.awt.Color(0, 102, 204));
+        JLforgotpassword.setText("<html><u>Forgot Password?</u></html>");
+    }//GEN-LAST:event_JLforgotpasswordMouseExited
+
+    private void JLforgotpasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JLforgotpasswordMouseClicked
+        // TODO add your handling code here:
+        String email = javax.swing.JOptionPane.showInputDialog(this, 
+                "Please enter your registered Email:", 
+                "Forgot Password", 
+                javax.swing.JOptionPane.QUESTION_MESSAGE);
+
+        if (email == null) {
+            return;
+        }
+        
+        String input = email.trim();
+        String emailPattern = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
+        
+        if (input.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Invalid input! Please enter your Email.", 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (!input.matches(emailPattern)) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Invalid Email address! Please use the correct format (e.g., user@gmail.com).", 
+                    "Error", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }    
+
+        javax.swing.JOptionPane.showMessageDialog(this, 
+                "A password reset link has been sent to " + input, 
+                "Success", 
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_JLforgotpasswordMouseClicked
 
     /**
      * @param args the command line arguments
@@ -256,13 +346,13 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JButton JBlogin;
     private javax.swing.JButton JBregister;
     private javax.swing.JPanel JHeader;
+    private javax.swing.JLabel JLforgotpassword;
     private javax.swing.JPanel JLogIn;
     private javax.swing.JPanel JMainFrame;
     private javax.swing.JPasswordField JPpassword;
     private javax.swing.JTextField JTusername;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel txtForgotPassword;
     private javax.swing.JLabel txtlogin;
     // End of variables declaration//GEN-END:variables
 }
